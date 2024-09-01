@@ -11,7 +11,8 @@ import numpy
 import random
 
 #function to create initial predefiend number of cluster centers (K) with data passed
-#data is a list of lists
+# Takes in number of clusters (K) and data
+# returns random cluster centers from within dataset
 def createClusters(numberOfClusters,data):
 # create list to store cluster means
     clusterCenters = []
@@ -22,6 +23,7 @@ def createClusters(numberOfClusters,data):
     return clusterCenters
 
 #group data into clusters based on distance from each cluster center
+# takes in center of clusters and groups data into closest cluster center
 def groupData(clusterCenters,data):
     
     # list to assign groupings
