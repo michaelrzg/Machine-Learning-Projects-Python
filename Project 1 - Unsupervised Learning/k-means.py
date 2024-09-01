@@ -1,6 +1,6 @@
 # Michael Rizig
 # CS7247 Machine Learning
-# Professor Xing
+# Professor Zongxing Xie
 # 8/31/24
 # Assignment 1: K-means
 
