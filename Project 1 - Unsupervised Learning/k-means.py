@@ -1,17 +1,29 @@
+# Michael Rizig
+# CS7247 Machine Learning
+# Professor Xing
+# 8/31/24
+# Assignment 1: K-means
+
+# import plot and math tools
 import matplotlib as plot
-import seaborn as sns;
+import seaborn as sea
 import numpy
 import random
 
-#function to create predefiend number of clusters (K) with data passed
+#function to create initial predefiend number of cluster centers (K) with data passed
 #data is a list of lists
-def createClusters(numberOfClusers,data):
-    # create list to store cluster means
+def createClusters(numberOfClusters,data):
+# create list to store cluster means
     clusterCenters = []
     #pick random values as clusters
-    for i in range (numberOfClusers):
+    for i in range (numberOfClusters):
         x = random.randint(0,len(data))
         clusterCenters.append(data[x])
+    return clusterCenters
+
+#group data into clusters based on distance from each cluster center
+def groupData(clusterCenters,data):
+    
     # list to assign groupings
     groupings = []
     
@@ -33,6 +45,8 @@ def createClusters(numberOfClusers,data):
     print("Grouping for each value set: ",groupings)
     return clusterCenters,groupings
 
+def recenterGroupings(groupings):
+    pass
 #helper function for parseCSV
 def isFloat(x):
     #try to see if passed value is float
@@ -66,6 +80,7 @@ def parseCSV(path):
     return values
 
 #print(parseCSV("G:\KSU\CS7267-Machine Learning\Assignments\Project 1 - Unsupervised Learning\Data\iris.csv"))
-
-clusters,groupings = createClusters(3,parseCSV("C:\CS7247\Machine-Learning-Projects-Python\Project 1 - Unsupervised Learning\Data\iris.csv"))
+data = parseCSV("C:\CS7247\Machine-Learning-Projects-Python\Project 1 - Unsupervised Learning\Data\iris.csv")
+clusterCenters = createClusters(3,data)
+clusters,groupings = groupData(clusterCenters,data)
 print(groupings)
