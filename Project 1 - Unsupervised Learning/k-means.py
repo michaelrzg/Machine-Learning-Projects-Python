@@ -49,7 +49,30 @@ def groupData(clusterCenters,data):
 
 #this function takes in current groupings, finds average of all values in each group
 #then recalls group data to new center clusters.
-def recenterGroupings(groupings):
+def recenterGroupings(K,groupings):
+    # create list to store average point of each group
+    groupAverage = [[0 for i in range(len(groupings[0][0]))] for u in range(K)]
+    # create list to store size of each current group
+    groupSizes = [0 for i in range(K)]
+    # find sizes of each group TODO: Fit this into other loop somehow
+    for i in groupings:
+        groupSizes[i[1]]+=1
+    #debug
+    #print(groupSizes)
+    
+    # for each datapoint structure: ([x,y,z,...],group#),
+    # go through each value in list [x,y,z,...], 
+    # divide it by total # of comparable values (divide each x by total appearences of x in group)
+    # and add that weighted value to its appropriate spot in group avreages
+    # at end of loop, we have average point of each group 
+    for datapoint in groupings:
+        for i in range(len(datapoint[0])):
+            groupAverage[datapoint[1]][i]+= datapoint[0][i] /groupSizes[datapoint[1]]
+
+    #debug        
+    print(groupAverage)
+
+    #TODO: now regroup each value 
     pass
 
 #helper function for parseCSV
@@ -87,7 +110,8 @@ def parseCSV(path):
     return values
 
 #print(parseCSV("G:\KSU\CS7267-Machine Learning\Assignments\Project 1 - Unsupervised Learning\Data\iris.csv"))
-data = parseCSV("C:\CS7247\Machine-Learning-Projects-Python\Project 1 - Unsupervised Learning\Data\iris.csv")
+data = parseCSV("G:\KSU\CS7267-Machine Learning\Assignments\Project 1 - Unsupervised Learning\Data\iris.csv")
 clusterCenters = createClusters(3,data)
 clusters,groupings = groupData(clusterCenters,data)
-print(groupings)
+#print(groupings)
+recenterGroupings(3,groupings)
