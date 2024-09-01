@@ -22,7 +22,16 @@ def createClusters(numberOfClusters,data):
         clusterCenters.append(data[x])
     return clusterCenters
 
-#group data into clusters based on distance from each cluster center
+# return size of each current group
+def groupSizes(K,groupings):
+     # create list to store size of each current group
+    groupSizes = [0 for i in range(K)]
+    # find sizes of each group TODO: Fit this into other loop somehow
+    for i in groupings:
+        groupSizes[i[1]]+=1
+    return groupSizes
+
+# group data into clusters based on distance from each cluster center
 # takes in center of clusters and groups data into closest cluster center
 def groupData(clusterCenters,data):
     
@@ -52,14 +61,9 @@ def groupData(clusterCenters,data):
 def recenterGroupings(K,groupings):
     # create list to store average point of each group
     groupAverage = [[0 for i in range(len(groupings[0][0]))] for u in range(K)]
-    # create list to store size of each current group
-    groupSizes = [0 for i in range(K)]
-    # find sizes of each group TODO: Fit this into other loop somehow
-    for i in groupings:
-        groupSizes[i[1]]+=1
-    #debug
-    #print(groupSizes)
-    
+   
+    Sizes = groupSizes(K,groupings)
+    print(Sizes)
     # for each datapoint structure: ([x,y,z,...],group#),
     # go through each value in list [x,y,z,...], 
     # divide it by total # of comparable values (divide each x by total appearences of x in group)
@@ -67,13 +71,15 @@ def recenterGroupings(K,groupings):
     # at end of loop, we have average point of each group 
     for datapoint in groupings:
         for i in range(len(datapoint[0])):
-            groupAverage[datapoint[1]][i]+= datapoint[0][i] /groupSizes[datapoint[1]]
+            groupAverage[datapoint[1]][i]+= datapoint[0][i] /Sizes[datapoint[1]]
 
     #debug        
-    print(groupAverage)
+    #print(groupAverage)
 
-    #TODO: now regroup each value 
-    pass
+    # now regroup data
+    newCenters, newGroupings = groupData(groupAverage,[i[0] for i in groupings])
+
+    return newCenters,newGroupings
 
 #helper function for parseCSV
 #checks if data is float in string format or not float
@@ -113,5 +119,7 @@ def parseCSV(path):
 data = parseCSV("G:\KSU\CS7267-Machine Learning\Assignments\Project 1 - Unsupervised Learning\Data\iris.csv")
 clusterCenters = createClusters(3,data)
 clusters,groupings = groupData(clusterCenters,data)
+
 #print(groupings)
-recenterGroupings(3,groupings)
+newCenters,newGroupings = recenterGroupings(3,groupings)
+print(groupSizes(len(newCenters),newGroupings))
