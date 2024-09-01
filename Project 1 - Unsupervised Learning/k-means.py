@@ -45,9 +45,13 @@ def groupData(clusterCenters,data):
     print("Grouping for each value set: ",groupings)
     return clusterCenters,groupings
 
+#this function takes in current groupings, finds average of all values in each group
+#then recalls group data to new center clusters.
 def recenterGroupings(groupings):
     pass
+
 #helper function for parseCSV
+#checks if data is float in string format or not float
 def isFloat(x):
     #try to see if passed value is float
     try:
@@ -60,6 +64,7 @@ def isFloat(x):
         return False
 
 #function to parse data from csv and return each set of values as list within list
+# takes in string path of csv file and returns all numeric values as list of lists
 def parseCSV(path):
     #open file
     file = open(path,'r',encoding='utf-8-sig')
