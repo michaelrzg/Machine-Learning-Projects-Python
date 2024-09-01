@@ -19,16 +19,16 @@ def createClusters(numberOfClusers,data):
     print("Randomly chosen cluster centers: ",clusterCenters)
     
     for x in data:
-        prevLowest=0
-        lowest=0
-        for center in clusterCenters:
-            difference  = [i - j for i,j in zip(center,x)]
-            if numpy.linalg.norm(numpy.array(center)-numpy.array(x)) < lowest:
-                lowest = center
+        distances=[]
+        for cluster in clusterCenters:
+            distance=0
+            for i in range(len(cluster)):
+                distance += numpy.sqrt((cluster[i]-x[i])**2)
+            distances.append(distance)
+        #assign the closest cluster center as group
+        groupings.append((x,distances.index(min(distances))))
 
-        if lowest!=prevLowest:
-            groupings.append((x,center))
-            prevLowest=lowest
+       
     #debug
     print("Grouping for each value set: ",groupings)
     return clusterCenters,groupings
@@ -61,11 +61,11 @@ def parseCSV(path):
         x= i.split(",")
         out = [a for a in x if isFloat(a)]
         #insert into list
-        values.append(out)
+        values.append([float(i) for i in out])
     #return list of values list
     return values
 
 #print(parseCSV("G:\KSU\CS7267-Machine Learning\Assignments\Project 1 - Unsupervised Learning\Data\iris.csv"))
 
-groupings,clusters = createClusters(3,parseCSV("G:\KSU\CS7267-Machine Learning\Assignments\Project 1 - Unsupervised Learning\Data\iris.csv"))
+clusters,groupings = createClusters(3,parseCSV("C:\CS7247\Machine-Learning-Projects-Python\Project 1 - Unsupervised Learning\Data\iris.csv"))
 print(groupings)
