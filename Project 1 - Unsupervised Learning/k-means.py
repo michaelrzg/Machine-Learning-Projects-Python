@@ -5,7 +5,7 @@
 # Assignment 1: K-means
 
 # import plot and math tools
-import matplotlib as plot
+import matplotlib.pyplot as plot
 import seaborn as sea
 import numpy
 import random
@@ -40,13 +40,21 @@ def groupData(clusterCenters,data):
     
     #debug
     print("Randomly chosen cluster centers: ",clusterCenters)
-    
+    # for eaach data point,
+    # calculate the distance between that point and each center
     for x in data:
+        #list to hold each distance
         distances=[]
+        #parse through each cluster center
         for cluster in clusterCenters:
+            #init distanceto 0
             distance=0
+            # calculate distance :  sqrt( a^2 + b^2 + c^2...) 
+            # and add
             for i in range(len(cluster)):
                 distance += numpy.sqrt((cluster[i]-x[i])**2)
+            #
+            #add it list for final comparison 
             distances.append(distance)
         #assign the closest cluster center as group
         groupings.append((x,distances.index(min(distances))))
@@ -115,11 +123,30 @@ def parseCSV(path):
     #return list of values list
     return values
 
+# MAIN: 
+
 #print(parseCSV("G:\KSU\CS7267-Machine Learning\Assignments\Project 1 - Unsupervised Learning\Data\iris.csv"))
+#parse Data
 data = parseCSV("G:\KSU\CS7267-Machine Learning\Assignments\Project 1 - Unsupervised Learning\Data\iris.csv")
+
+#generate K number of random cluster centers
 clusterCenters = createClusters(3,data)
+
+#group data based on random clusters
 clusters,groupings = groupData(clusterCenters,data)
 
 #print(groupings)
+#find average of each data group, use that as new center, regroup based on average
 newCenters,newGroupings = recenterGroupings(3,groupings)
-print(groupSizes(len(newCenters),newGroupings))
+#print new grouping
+#print(groupSizes(len(newCenters),newGroupings))
+
+colors = ["red","blue","green"]
+
+plot.axes(projection='3d')
+for duple in newGroupings:
+    plot.scatter(duple[0][0],duple[0][1],duple[0][2], color=colors[duple[1]])
+   
+
+plot.title("Data without normalization:")
+plot.show()
