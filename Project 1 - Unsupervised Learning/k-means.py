@@ -116,7 +116,9 @@ def parseCSV(path):
     values = []
     #split each line, then filter out non-numeric values
     for i in lines:
-        x= i.split(",")
+        x= i.split("   ")
+        x.remove('')
+        print(x)
         out = [a for a in x if isFloat(a)]
         #insert into list
         values.append([float(i) for i in out])
@@ -127,7 +129,7 @@ def parseCSV(path):
 
 #print(parseCSV("G:\KSU\CS7267-Machine Learning\Assignments\Project 1 - Unsupervised Learning\Data\iris.csv"))
 #parse Data
-data = parseCSV("G:\KSU\CS7267-Machine Learning\Assignments\Project 1 - Unsupervised Learning\Data\iris.csv")
+data = parseCSV("G:\KSU\CS7267-Machine Learning\Assignments\Project 1 - Unsupervised Learning\Data\kmtest.csv")
 
 #normalize data (delete this section for non-normalized data runs)
 K = 5
@@ -148,14 +150,14 @@ newCenters,newGroupings = recenterGroupings(K,groupings)
 colors = ["red","blue","green","yellow","purple"]
 
 #make plot 3d
-plot.axes(projection='3d')
+#plot.axes(projection='3d')
 
 #plot each datapoint
 for duple in newGroupings:
-    plot.scatter(duple[0][0],duple[0][1],duple[0][2], color=colors[duple[1]])
+    plot.scatter(duple[0][0],duple[0][1], color=colors[duple[1]])
    
 #title, save, and show plot
-plot.title(f"K={K} Iris dataset with normalization:")
-plot.savefig(f"Figures/K={K} Iris-with-norm.png")
+plot.title(f"K={K} kmtest dataset with normalization:")
+plot.savefig(f"Figures/kmtest-normalized/K={K} kmtest-with-norm.png")
 plot.show()
 
