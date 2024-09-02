@@ -129,24 +129,33 @@ def parseCSV(path):
 #parse Data
 data = parseCSV("G:\KSU\CS7267-Machine Learning\Assignments\Project 1 - Unsupervised Learning\Data\iris.csv")
 
+#normalize data (delete this section for non-normalized data runs)
+K = 5
 #generate K number of random cluster centers
-clusterCenters = createClusters(3,data)
+clusterCenters = createClusters(K,data)
 
 #group data based on random clusters
 clusters,groupings = groupData(clusterCenters,data)
 
 #print(groupings)
 #find average of each data group, use that as new center, regroup based on average
-newCenters,newGroupings = recenterGroupings(3,groupings)
+
+newCenters,newGroupings = recenterGroupings(K,groupings)
 #print new grouping
 #print(groupSizes(len(newCenters),newGroupings))
 
-colors = ["red","blue","green"]
+#colors for each cluster
+colors = ["red","blue","green","yellow","purple"]
 
+#make plot 3d
 plot.axes(projection='3d')
+
+#plot each datapoint
 for duple in newGroupings:
     plot.scatter(duple[0][0],duple[0][1],duple[0][2], color=colors[duple[1]])
    
-
-plot.title("Data without normalization:")
+#title, save, and show plot
+plot.title(f"K={K} Iris dataset with normalization:")
+plot.savefig(f"Figures/K={K} Iris-with-norm.png")
 plot.show()
+
