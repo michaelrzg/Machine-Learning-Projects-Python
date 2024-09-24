@@ -1,7 +1,7 @@
 # Michael Rizig
 # CS7247 Machine Learning
 # Professor Zongxing Xie
-# 8/31/24
+# 9/24/24
 # Assignment 2: K Nearest Neighbor
 
 # import plot and math tools
@@ -9,58 +9,74 @@ import matplotlib.pyplot as plot
 import seaborn as sea
 import statistics
 import math
-# this function assigns a group to each input datapoint
-# data format: 
-# data = [x1,x2...x613]
-# Datapoint x ∈ Data = ([x1,x2,..x29], label)
-# input format = [x1,x2...x29]
-# output format = int 
-def predict(input, k, data):
-    # define list to store distances from input to all datapoints
-    distances = []
-    # for each datapoint in sample input, calculate its distance to all other points
-    for datapoint in data:
-        sum=0
-        for i in range(len(input)-1):
-            sum += (input[i]-datapoint[0][i])**2
-        distances.append((math.sqrt(sum),datapoint))
-    # sort list
-    distances.sort(key=lambda x: x[0])
-    # get k closest values
-    kclosest = distances[:k]
-    #debug
-    #print("\n\ninput:",input, "closest:",kclosest)
-    #tallay votes
-    votes = []
-    for value in kclosest:
-        votes.append(value[1][1])
-    # return the label with the highest votes (mode of set)
-    return statistics.mode(votes)
 
-def run(inputSet, trainingSet):
-    # predetermined k values to run
-    kvalues = [1,3,5,7,9,11,13]
-    for k in kvalues:
-        # tally for confusion matrix later
-        correct=0
-        error=0
-        #for each datapoint in the input set:
-        # 1: remove label from sample array in first positon of duple,
-        # 2: run predict to get predicted class for datapoint
-        # 3: compare it to actual class (second position in duple)
-        # 4: tally results
-        for datapoint in inputSet:
-            # remove last value ()
-            datapoint[0].pop()
-            # predict
-            prediction = predict(datapoint[0],k,trainingSet)
-            # compare and tally
-            if(prediction != datapoint[1]):
-                error+=1
-            else:
-                correct+=1
-        print("K value: ", k , " Correct: " , correct, " Error: ", error, " Accuracy: " , (correct/(correct+error))*100 , "%")
-    
+class distanceCalculationModule:
+    def __init__():
+        pass
+    # this function assigns a group to each input datapoint
+    # data format: 
+    # data = [x1,x2...x613]
+    # Datapoint x ∈ Data = ([x1,x2,..x29], label)
+    # input format = [x1,x2...x29]
+    # output format = int 
+    def predict(self,input, k, data):
+        # define list to store distances from input to all datapoints
+        distances = []
+        # for each datapoint in sample input, calculate its distance to all other points
+        for datapoint in data:
+            sum=0
+            for i in range(len(input)-1):
+                sum += (input[i]-datapoint[0][i])**2
+            distances.append((math.sqrt(sum),datapoint))
+        # sort list
+        distances.sort(key=lambda x: x[0])
+        # get k closest values
+        kclosest = distances[:k]
+        #debug
+        #print("\n\ninput:",input, "closest:",kclosest)
+        #tallay votes
+        votes = []
+        for value in kclosest:
+            votes.append(value[1][1])
+        # return the label with the highest votes (mode of set)
+        return statistics.mode(votes)
+    def run(self,inputSet, trainingSet):
+        # predetermined k values to run
+        kvalues = [1,3,5,7,9,11,13,15,17,19]
+        for k in kvalues:
+            # tally for confusion matrix later
+            correct=0
+            error=0
+            tr=0
+            bl=0
+            n1=0
+            p1=0
+            #for each datapoint in the input set:
+            # 1: remove label from sample array in first positon of duple,
+            # 2: run predict to get predicted class for datapoint
+            # 3: compare it to actual class (second position in duple)
+            # 4: tally results
+            for datapoint in inputSet:
+                # remove last value ()
+                datapoint[0].pop()
+                # predict
+                prediction = self.predict(datapoint[0],k,trainingSet)
+                # compare and tally
+                if(prediction != datapoint[1]):
+                    if(int(prediction)==1):
+                        tr+=1
+                    else:
+                        bl+=1
+                    error+=1
+                else:
+                    correct+=1
+                if(int(prediction) == -1):
+                    n1+=1
+                else:
+                    p1+=1
+            print("K value: ", k , " Correct: " , correct, " Error: ", error, " Accuracy: " , (correct/(correct+error))*100 , "%")
+            #print("top right: " , tr, " bottom left: ",bl, " Negative 1: ", n1, " Positive 1: " ,p1)
+        
                  
 # read in data from file to memory          
 def readData(path):
@@ -113,4 +129,5 @@ testingSetCount = len(dataset)-trainingSetCount
 trainingSet = dataset[:trainingSetCount]
 testingSet = dataset[-testingSetCount:]
 # run model
-run(testingSet,trainingSet)
+model = distanceCalculationModule()
+model.run(testingSet,trainingSet)
