@@ -8,7 +8,7 @@
 import matplotlib.pyplot as plot
 import seaborn as sea
 import statistics
-
+import math
 # this function assigns a group to each input datapoint
 # data format: 
 # data = [x1,x2...x613]
@@ -23,7 +23,7 @@ def predict(input, k, data):
         sum=0
         for i in range(len(input)-1):
             sum += (input[i]-datapoint[0][i])**2
-        distances.append((sum,datapoint))
+        distances.append((math.sqrt(sum),datapoint))
     # sort list
     distances.sort(key=lambda x: x[0])
     # get k closest values
