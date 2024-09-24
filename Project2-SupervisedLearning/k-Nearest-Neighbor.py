@@ -44,10 +44,17 @@ def run(inputSet, trainingSet):
         # tally for confusion matrix later
         correct=0
         error=0
+        #for each datapoint in the input set:
+        # 1: remove label from sample array in first positon of duple,
+        # 2: run predict to get predicted class for datapoint
+        # 3: compare it to actual class (second position in duple)
+        # 4: tally results
         for datapoint in inputSet:
             # remove last value ()
             datapoint[0].pop()
+            # predict
             prediction = predict(datapoint[0],k,trainingSet)
+            # compare and tally
             if(prediction != datapoint[1]):
                 error+=1
             else:
@@ -71,6 +78,7 @@ def readData(path):
     # output[x] = ([x1,x2...x29],label)
     for datapoint in lines:
         x = datapoint.split(",")
+        # convert each array into an array of float values, and duple it with the class label
         output.append(([float(x[i]) for i in range(len(x)-2)],x[len(x)-1]))
     return output
 
@@ -84,6 +92,7 @@ def normalizeData(data):
             x[0][i] = (x[0][i]-minValue)/(maxValue-minValue)  
     return data
 
+# normalize a single sample value
 def normalizeInput(input):
     maxValue = max(input)
     minValue = min(input)
@@ -103,5 +112,5 @@ testingSetCount = len(dataset)-trainingSetCount
 # partition training set and testing set from full dataset:
 trainingSet = dataset[:trainingSetCount]
 testingSet = dataset[-testingSetCount:]
-print(len(testingSet))
+# run model
 run(testingSet,trainingSet)
